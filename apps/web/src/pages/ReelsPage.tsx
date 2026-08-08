@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Volume2, VolumeX } from 'lucide-react';
 import { useCurated, useSDKEvent } from '@headless-media/react';
 import { getBestVideoFile } from '@headless-media/core';
 import { useReelSwiper } from '@headless-media/ui-react';
@@ -79,7 +80,7 @@ function ReelItemView({ video, isActive, isMuted, onToggleMute }: ReelItemViewPr
           onClick={onToggleMute}
           aria-label={isMuted ? 'Unmute video audio' : 'Mute video audio'}
         >
-          {isMuted ? '🔇 Muted' : '🔊 Sound On'}
+          {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
         </button>
       )}
 
