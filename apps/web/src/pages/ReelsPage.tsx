@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useCurated, useSDKEvent } from '@headless-media/react';
 import { getBestVideoFile } from '@headless-media/core';
 import { useReelSwiper } from '@headless-media/ui-react';
@@ -16,17 +16,90 @@ import { LoadingState, ErrorState, EmptyState } from '../components/StateCompone
  * The onActiveItemChange callback passed to useReelSwiper triggers a view event
  * via useViewer in a real app. Here we use useSDKEvent to show it working.
  */
+interface ReelItemViewProps {
+  video: Video;
+  isActive: boolean;
+  isMuted: boolean;
+  onToggleMute: () => void;
+}
+
+function ReelItemView({ video, isActive, isMuted, onToggleMute }: ReelItemViewProps) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [hasError, setHasError] = useState(false);
+  const bestFile = getBestVideoFile(video, 'hd');
+
+  useEffect(() => {
+    const videoEl = videoRef.current;
+    if (videoEl === null || bestFile === undefined || !bestFile.link) return;
+
+    videoEl.muted = isMuted;
+
+    if (isActive) {
+      const playPromise = videoEl.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((err: Error) => {
+          if (err.name !== 'AbortError') {
+            console.warn('[ReelItemView] Autoplay interrupted:', err);
+          }
+        });
+      }
+    } else {
+      videoEl.pause();
+    }
+  }, [isActive, isMuted, bestFile]);
+
+  if (bestFile === undefined || !bestFile.link || hasError) {
+    return (
+      <div className="reel-error-placeholder" role="alert">
+        <p style={{ fontWeight: 600 }}>Video Unavailable</p>
+        <p style={{ fontSize: '0.8rem', opacity: 0.7 }}>
+          {video.user.name ? `By ${video.user.name}` : 'Unable to stream this reel format.'}
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <video
+        ref={videoRef}
+        src={bestFile.link}
+        poster={video.image}
+        loop
+        muted={isMuted}
+        playsInline
+        aria-label={`Video reel by ${video.user.name}`}
+        onError={() => setHasError(true)}
+      />
+
+      {isActive && (
+        <button
+          type="button"
+          className="reel-sound-btn"
+          onClick={onToggleMute}
+          aria-label={isMuted ? 'Unmute video audio' : 'Mute video audio'}
+        >
+          {isMuted ? '🔇 Muted' : '🔊 Sound On'}
+        </button>
+      )}
+
+      <div className="reel-item-info">
+        <p className="reel-item-author">By {video.user.name}</p>
+        <p style={{ fontSize: '0.75rem', opacity: 0.6 }}>Duration: {video.duration}s</p>
+      </div>
+    </>
+  );
+}
+
 export function ReelsPage() {
   const { results, isLoading, error, fetchMore, hasMore, refresh } = useCurated('videos', {
     perPage: 10,
   });
 
+  const [isMuted, setIsMuted] = useState(true);
+
   const { getContainerProps, getItemProps, activeIndex } = useReelSwiper<Video>({
     items: results,
-    onActiveItemChange: (_video, _index) => {
-      // The view event is emitted by useViewer in useReelSwiper's onActiveItemChange
-      // In this demo we log it to demonstrate SDK event flow without circular deps
-    },
   });
 
   const activeIndicatorRef = useRef<HTMLDivElement>(null);
@@ -62,30 +135,16 @@ export function ReelsPage() {
         }
       }}
     >
-      {results.map((video, index) => {
-        const bestFile = getBestVideoFile(video, 'hd');
-        return (
-          <div key={video.id} {...getItemProps(video, index)} className="reel-item">
-            {bestFile !== undefined && (
-              <video
-                src={bestFile.link}
-                poster={video.image}
-                autoPlay={index === activeIndex}
-                loop
-                muted
-                playsInline
-                aria-label={`Video by ${video.user.name}`}
-              />
-            )}
-            <div className="reel-item-info">
-              <p className="reel-item-author">By {video.user.name}</p>
-              <p style={{ fontSize: '0.75rem', opacity: 0.6 }}>
-                {index + 1} / {results.length}
-              </p>
-            </div>
-          </div>
-        );
-      })}
+      {results.map((video, index) => (
+        <div key={video.id} {...getItemProps(video, index)} className="reel-item">
+          <ReelItemView
+            video={video}
+            isActive={index === activeIndex}
+            isMuted={isMuted}
+            onToggleMute={() => setIsMuted((prev) => !prev)}
+          />
+        </div>
+      ))}
       <div ref={activeIndicatorRef} aria-hidden="true" />
     </div>
   );
