@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "allowImportingTsExtensions": false,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noFallthroughCasesInSwitch": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "declarationMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "@headless-media/core": ["packages/media-core/src/index.ts"],
+      "@headless-media/react": ["packages/media-react/src/index.ts"],
+      "@headless-media/ui-react": ["packages/media-ui-react/src/index.ts"],
+      "@headless-media/native": ["packages/media-native/src/index.ts"],
+      "@headless-media/ui-native": ["packages/media-ui-native/src/index.ts"]
+    },
+    "sourceMap": true
+  }
+}

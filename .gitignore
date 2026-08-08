@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# Vite
+.vite/
+
+# Turbo
+.turbo/
+
+# Test / coverage
+coverage/
+
+# Storybook
+storybook-static/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Changesets (keep the .changeset dir but ignore pre.json)
+.changeset/pre.json

@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "noEmit": true
+  },
+  "references": [
+    { "path": "../../packages/media-core" },
+    { "path": "../../packages/media-react" },
+    { "path": "../../packages/media-ui-react" }
+  ],
+  "include": ["src/**/*", "vite.config.ts"]
+}

@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: Build, Lint, Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Format check
+        run: pnpm format:check
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+      # Upload coverage reports to CI artifacts
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: packages/*/coverage/
+          retention-days: 14
+
+  # Boundary check — verify no package violates dependency rules
+  boundary-check:
+    name: Dependency Boundary Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify media-core has no React imports
+        run: |
+          if grep -r "from ['\"]react" packages/media-core/src/ --include="*.ts"; then
+            echo "❌ media-core imports React — boundary violation!"
+            exit 1
+          fi
+          echo "✅ media-core has no React imports"
+
+      - name: Verify media-ui-react has no SDK imports
+        run: |
+          if grep -r "from.*@headless-media/core\|from.*@headless-media/react" \
+            packages/media-ui-react/src/ --include="*.ts" --include="*.tsx"; then
+            echo "❌ media-ui-react imports SDK packages — boundary violation!"
+            exit 1
+          fi
+          echo "✅ media-ui-react has no SDK imports"
+
+      - name: Verify media-ui-native has no SDK imports
+        run: |
+          if grep -r "from.*@headless-media/core\|from.*@headless-media/react" \
+            packages/media-ui-native/src/ --include="*.ts" --include="*.tsx"; then
+            echo "❌ media-ui-native imports SDK packages — boundary violation!"
+            exit 1
+          fi
+          echo "✅ media-ui-native has no SDK imports"

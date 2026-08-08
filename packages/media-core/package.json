@@ -1,0 +1,44 @@
+{
+  "name": "@headless-media/core",
+  "version": "0.1.0",
+  "description": "Framework-agnostic media SDK core — Pexels API client, caching, events, typed models",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build && tsc --emitDeclarationOnly",
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist coverage"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^2.1.0",
+    "vite": "^6.0.0",
+    "vite-plugin-dts": "^4.0.0",
+    "vitest": "^2.1.0",
+    "typescript": "^5.4.0"
+  },
+  "keywords": [
+    "sdk",
+    "media",
+    "pexels",
+    "typescript",
+    "framework-agnostic"
+  ],
+  "license": "MIT"
+}

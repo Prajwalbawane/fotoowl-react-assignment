@@ -1,0 +1,5 @@
+# Fix for Windows: Git's sh.exe does not inherit the full Windows PATH.
+# Prepend the Node.js and npm global bin directories so pnpm can be found.
+export PATH="/c/Program Files/nodejs:$HOME/AppData/Roaming/npm:$PATH"
+
+pnpm lint-staged
