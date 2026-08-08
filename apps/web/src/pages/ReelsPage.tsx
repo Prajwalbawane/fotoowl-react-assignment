@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, type MouseEvent } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
 import { useCurated, useSDKEvent } from '@headless-media/react';
 import { getBestVideoFile } from '@headless-media/core';
@@ -49,6 +49,18 @@ function ReelItemView({ video, isActive, isMuted, onToggleMute }: ReelItemViewPr
     }
   }, [isActive, isMuted, bestFile]);
 
+  const handleToggleMute = (e: MouseEvent) => {
+    e.stopPropagation();
+    const videoEl = videoRef.current;
+    if (videoEl !== null) {
+      videoEl.muted = !isMuted;
+      if (videoEl.paused && isActive) {
+        void videoEl.play();
+      }
+    }
+    onToggleMute();
+  };
+
   if (bestFile === undefined || !bestFile.link || hasError) {
     return (
       <div className="reel-error-placeholder" role="alert">
@@ -77,7 +89,7 @@ function ReelItemView({ video, isActive, isMuted, onToggleMute }: ReelItemViewPr
         <button
           type="button"
           className="reel-sound-btn"
-          onClick={onToggleMute}
+          onClick={handleToggleMute}
           aria-label={isMuted ? 'Unmute video audio' : 'Mute video audio'}
         >
           {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
