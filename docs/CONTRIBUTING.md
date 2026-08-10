@@ -8,8 +8,8 @@
 ## Setup
 
 ```bash
-git clone https://github.com/your-username/headless-media-sdk
-cd headless-media-sdk
+git clone https://github.com/Prajwalbawane/fotoowl-react-assignment
+cd fotoowl-react-assignment
 pnpm install
 cp .env.example apps/web/.env.local
 # Add your Pexels API key to apps/web/.env.local

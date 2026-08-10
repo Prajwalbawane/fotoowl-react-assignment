@@ -48,8 +48,8 @@ apps/web
 
 ```bash
 # Prerequisites: Node 20+, pnpm 9+
-git clone https://github.com/your-username/headless-media-sdk
-cd headless-media-sdk
+git clone https://github.com/Prajwalbawane/fotoowl-react-assignment
+cd fotoowl-react-assignment
 
 # Install all workspace dependencies
 pnpm install
