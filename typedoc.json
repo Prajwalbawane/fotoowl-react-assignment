@@ -1,12 +1,13 @@
 {
   "entryPoints": ["packages/media-core/src/index.ts"],
+  "tsconfig": "packages/media-core/tsconfig.json",
   "out": "docs/api",
   "plugin": [],
   "name": "Headless Media SDK — API Reference",
   "includeVersion": true,
   "readme": "none",
   "navigationLinks": {
-    "GitHub": "https://github.com/your-username/headless-media-sdk",
-    "Demo": "https://headless-media-sdk.vercel.app"
+    "GitHub": "https://github.com/Prajwalbawane/fotoowl-react-assignment",
+    "Demo": "https://fotoowl-react-assignment-web.vercel.app"
   }
 }

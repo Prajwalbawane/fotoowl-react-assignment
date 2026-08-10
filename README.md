@@ -5,12 +5,12 @@
 
 **A framework-agnostic media SDK ecosystem powered by the Pexels API**
 
-[![CI](https://github.com/your-username/headless-media-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/headless-media-sdk/actions/workflows/ci.yml)
+[![CI](https://github.com/Prajwalbawane/fotoowl-react-assignment/actions/workflows/ci.yml/badge.svg)](https://github.com/Prajwalbawane/fotoowl-react-assignment/actions/workflows/ci.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![pnpm](https://img.shields.io/badge/pnpm-9.x-F69220?logo=pnpm&logoColor=white)](https://pnpm.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-[Live Demo](https://headless-media-sdk.vercel.app) · [SDK Docs](https://headless-media-sdk.vercel.app/docs) · [Storybook](https://headless-media-sdk-storybook.vercel.app)
+[Live Demo](https://fotoowl-react-assignment-web.vercel.app) · [SDK Docs](https://fotoowl-react-assignment-web.vercel.app/docs/) · [Components Docs (Storybook)](https://fotoowl-react-assignment-web.vercel.app/storybook/)
 
 </div>
 

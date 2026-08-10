@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node -e \"const { execSync } = require('child_process'); execSync('pnpm docs', { cwd: '../..' }); execSync('pnpm --filter @headless-media/ui-react build-storybook', { cwd: '../..' }); fs.cpSync('../../docs/api', 'public/docs', { recursive: true }); fs.cpSync('../../packages/media-ui-react/storybook-static', 'public/storybook', { recursive: true });\"",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint src",
